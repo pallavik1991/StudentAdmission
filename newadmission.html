@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add New Admission</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$("#btnadd").click(function(){
+				var usn=document.getElementById("txtusn").value;
+				
+				 $.ajax({
+			      type: "POST",
+			      url: 'dal_fetchfees.php',
+			      data: ({
+			      	param_usn:usn
+			      	}),
+			      success: function(data) {
+			       var row="<input type=text name=txtfees id=txtfees value="+data+" >";
+			       $('#divfees').after(row);
+			      
+			      } 
+			    }); 
+			    });
+
+			    $("#btnsubmit").click(function(){
+			    	var usn=document.getElementById("txtusn").value;
+			    	var academic=document.getElementById("txtacademic").value;
+			    	var fees=document.getElementById("txtfees").value;
+			    	var paymenttype=document.getElementById("ddlpaymenttype").value;
+			    	var installments=document.getElementById("txtinstallments").value;
+			    	var paymentdate=document.getElementById("txtpaymentdate").value;
+			    	var promotion=document.getElementById("rdbstatus").value;
+			    	var joindate=document.getElementById("txtjoindate").value;
+			    	var feesconcession=document.getElementById("rdbconcession").value;
+
+			    	$.ajax({
+			    		type: "POST",
+			    		url: 'dal_newadmission.php',
+			    		data: ({
+			    				param_usn:usn,
+			    			param_academic:academic,
+			    			param_fees:fees,
+			    			param_paymenttype:paymenttype,
+			    			param_installments:installments,
+			    			param_paymentdate:paymentdate,
+			    			param_promotion:promotion,
+			    			param_joindate:joindate,
+			    			param_concession:feesconcession
+			    		}),
+			    		success: function(data){
+			    			document.getElementById("div1").innerHtml=data;
+			    		}
+			    	});
+
+			    }); 
+		});
+	</script>
+</head>
+<body>
+	<center><h1>Add New Admission</h1></center>
+	<form method="POST">
+		<table border="1" align="center">
+			 <tr>
+				<td>Usn</td>
+				<td><input type="text" name="txtusn" id="txtusn" autofocus="true" />
+			</tr>
+			
+			 
+			<tr>
+				<td><input type="button" name="btnadd" id="btnadd" value="Get Fees" />
+			</tr>
+		</table>
+		<table border="1" align="center">
+			<tr>
+				<td>Academic Year</td>
+				<td>
+					<input type="text" name="txtacademic" id="txtacademic">
+				</td>
+			</tr>
+			<tr>
+				<td>Fees</td>
+				<td>
+					<div id="divfees"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>Payment Type</td>
+				<td>
+					<select name="ddlpaymenttype" id="ddlpaymenttype">
+						<option>Cash</option>
+						<option>Cheque</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Total Installments</td>
+				<td>
+					<input type="text" name="txtinstallments" id="txtinstallments">
+				</td>
+			</tr>
+			<tr>
+				<td>Payment Plan Date</td>
+				<td>
+					<input type="date" name="txtpaymentdate" id="txtpaymentdate">
+				</td>
+			</tr>
+			<tr>
+				<td>Promotion Status</td>
+				<td>
+					<input type="radio" name="rdbstatus" id="rdbstatus" value="Y" checked>Yes
+					<input type="radio" name="rdbstatus" id="rdbstatus" value="N">No
+				</td>
+			</tr>
+			<tr>
+				<td>Join Date</td>
+				<td>
+					<input type="date" name="txtjoindate" id="txtjoindate">
+				</td>
+			</tr>
+			<tr>
+				<td>Fees Concession Given?</td>
+				<td>
+					<input type="radio" name="rdbconcession" id="rdbconcession" value="Y" checked>Yes
+					<input type="radio" name="rdbconcession" id="rdbconcession" value="N">No
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" name="btnsubmit" id="btnsubmit" value="Submit">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<br>
+	<center><font color="red"><div id="div1">
+		
+	</div></font></center>
+</body>
+</html>
